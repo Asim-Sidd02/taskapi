@@ -7,7 +7,7 @@ const RefreshTokenSchema = new mongoose.Schema({
 
 const UserSchema = new mongoose.Schema(
   {
-    username: { type: String, required: true },
+  username: { type: String, required: false, unique: true, sparse: true },
     email: { type: String, unique: true, required: true },
     passwordHash: { type: String, required: true },
     refreshTokens: { type: [RefreshTokenSchema], default: [] }

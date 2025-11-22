@@ -164,11 +164,11 @@ router.post('/logout', async (req, res) => {
 
     if (!decoded || !decoded.sub) return res.status(200).json({ message: 'Logged out' });
 
-    const user = await User.findById(decoded.sub);
-    if (!user) return res.status(200).json({ message: 'Logged out' });
+  await User.updateOne(
+  { _id: decoded.sub },
+  { $pull: { refreshTokens: { token: refreshToken } } }
+);
 
-    user.refreshTokens = user.refreshTokens.filter(rt => rt.token !== refreshToken);
-    await user.save();
     return res.status(200).json({ message: 'Logged out' });
   } catch (err) {
     console.error('Logout error:', err);
