@@ -5,6 +5,8 @@ const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
+const notesRoutes = require('./routes/notes');
+const authMiddleware = require('./middleware/auth');
 
 const app = express();
 
@@ -13,7 +15,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
-
+app.use('/api/notes', authMiddleware, notesRoutes);
 // health (quick check)
 app.get('/health', (req, res) => res.json({ ok: true, ts: Date.now() }));
 
